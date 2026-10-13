@@ -1,0 +1,69 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>População do Brasil 2026 — IBGE</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#f5f1e8;--fg:#1d2a24;--mut:#6b756f;--card:#fffdf7;--ln:#ddd5c2;--a:#0b6e4f;--b:#c8553d;--bar:#0b6e4f}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#141a17;--fg:#ece7da;--mut:#9aa59e;--card:#1c241f;--ln:#2e3a33;--a:#4fc79a;--b:#f08a6f;--bar:#4fc79a}}
+:root[data-theme=dark]{--bg:#141a17;--fg:#ece7da;--mut:#9aa59e;--card:#1c241f;--ln:#2e3a33;--a:#4fc79a;--b:#f08a6f;--bar:#4fc79a}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.45 Georgia,'Times New Roman',serif}
+main{max-width:1000px;margin:0 auto;padding:24px 16px 48px}
+h1{font-size:clamp(28px,5vw,44px);line-height:1.05;margin:0 0 6px;letter-spacing:-.02em}
+.sub{color:var(--mut);margin:0 0 20px;font-family:system-ui,sans-serif;font-size:13px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:20px}
+.k{background:var(--card);border:1px solid var(--ln);padding:12px 14px;border-radius:8px}
+.k b{display:block;font-size:22px}.k span{font:12px system-ui,sans-serif;color:var(--mut)}
+.ctl{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:14px;font:13px system-ui,sans-serif}
+.seg{display:inline-flex;border:1px solid var(--ln);border-radius:8px;overflow:hidden}
+.seg button{border:0;background:var(--card);color:var(--fg);padding:8px 14px;cursor:pointer;font:inherit}
+.seg button.on{background:var(--fg);color:var(--bg)}
+select,input[type=range]{font:inherit}select{padding:7px;border-radius:8px;border:1px solid var(--ln);background:var(--card);color:var(--fg)}
+.panel{background:var(--card);border:1px solid var(--ln);border-radius:10px;padding:14px}
+.row{display:grid;grid-template-columns:minmax(110px,190px) 1fr 84px;gap:8px;align-items:center;padding:3px 0;font:13px system-ui,sans-serif;cursor:pointer}
+.row:hover{background:rgba(127,127,127,.12)}.row .n{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.row .n i{color:var(--mut);font-style:normal;font-size:11px}
+.row .t{background:rgba(127,127,127,.12);height:16px;border-radius:3px;overflow:hidden}.row .f{height:100%;background:var(--bar);border-radius:3px;transition:width .4s}
+.row .v{text-align:right;font-variant-numeric:tabular-nums}
+#info{margin-top:14px;padding:12px 14px;border-left:4px solid var(--b);background:var(--card);border-radius:0 8px 8px 0;font:13px/1.5 system-ui,sans-serif;min-height:48px}
+h2{font-size:18px;margin:0 0 10px}.foot{margin-top:24px;color:var(--mut);font:12px system-ui,sans-serif}
+.hide{display:none}
+</style></head><body><main>
+<h1>Quem mora onde?<br>População do Brasil em 2026</h1>
+<p class="sub">Estimativas IBGE para 1º de julho de 2026 · 27 UFs e <span id="nm"></span> municípios</p>
+<div class="kpis" id="kpis"></div>
+<div class="ctl">
+ <div class="seg" id="lvl"><button data-v="s" class="on">Estados</button><button data-v="m">Municípios</button></div>
+ <div class="seg" id="dir"><button data-v="top" class="on">Mais habitantes</button><button data-v="bot">Menos habitantes</button></div>
+ <label>Região <select id="reg"><option value="">Todas</option></select></label>
+ <label>Mostrar <input type="range" id="n" min="5" max="27" value="10"> <b id="nv">10</b></label>
+</div>
+<div class="panel"><h2 id="ttl"></h2><div id="list"></div></div>
+<div id="info">Clique em uma barra para ver detalhes.</div>
+<p class="foot">Fonte: IBGE, Diretoria de Pesquisas – COPIS, estimativas populacionais 2026. Rankings municipais exibem os 30 maiores e 30 menores do país.</p>
+</main>
+<script>
+const D={"s":[["RO","Rondônia","Norte",1757338,52,"Porto Velho",520379,"Pimenteiras do Oeste",2308,1757338],["AC","Acre","Norte",887794,22,"Rio Branco",390058,"Santa Rosa do Purus",7285,887794],["AM","Amazonas","Norte",4360926,62,"Manaus",2327101,"Japurá",9527,4360926],["RR","Roraima","Norte",761012,15,"Boa Vista",500965,"São Luiz do Anauá",7920,761012],["PA","Pará","Norte",8756324,144,"Belém",1396157,"Bannach",4327,8756324],["AP","Amapá","Norte",809953,16,"Macapá",491987,"Pracuúba",4053,809953],["TO","Tocantins","Norte",1595994,139,"Palmas",333154,"Oliveira de Fátima",1228,1595994],["MA","Maranhão","Nordeste",7024557,217,"São Luís",1090229,"Nova Iorque",4405,7024557],["PI","Piauí","Nordeste",3392617,224,"Teresina",908012,"Miguel Leão",1359,3392617],["CE","Ceará","Nordeste",9302211,184,"Fortaleza",2582360,"Granjeiro",4951,9302211],["RN","Rio Grande do Norte","Nordeste",3463737,167,"Natal",783196,"Viçosa",1909,3463737],["PB","Paraíba","Nordeste",4182828,223,"João Pessoa",906093,"Parari",1739,4182828],["PE","Pernambuco","Nordeste",9583176,185,"Recife",1588983,"Fernando de Noronha",3364,9583176],["AL","Alagoas","Nordeste",3221128,102,"Maceió",995134,"Pindoba",2785,3221128],["SE","Sergipe","Nordeste",2307255,75,"Aracaju",623328,"Amparo do São Francisco",2199,2307255],["BA","Bahia","Nordeste",14889472,417,"Salvador",2559945,"Catolândia",3566,14889472],["MG","Minas Gerais","Sudeste",21460311,853,"Belo Horizonte",2415451,"Serra da Saudade",857,21460311],["ES","Espírito Santo","Sudeste",4150692,78,"Serra",586901,"Divino de São Lourenço",5391,4150692],["RJ","Rio de Janeiro","Sudeste",17225410,92,"Rio de Janeiro",6731133,"Macuco",5603,17225410],["SP","São Paulo","Sudeste",46179008,645,"São Paulo",11911337,"Borá",935,46179008],["PR","Paraná","Sul",11952456,399,"Curitiba",1832183,"Nova Aliança do Ivaí",1316,11952456],["SC","Santa Catarina","Sul",8312759,295,"Joinville",673980,"Barra Bonita",1628,8312759],["RS","Rio Grande do Sul","Sul",11233317,497,"Porto Alegre",1388791,"André da Rocha",1156,11233317],["MS","Mato Grosso do Sul","Centro-Oeste",2946317,79,"Campo Grande",970843,"Jateí",3573,2946317],["MT","Mato Grosso","Centro-Oeste",3950330,142,"Cuiabá",698917,"Araguainha",989,3950330],["GO","Goiás","Centro-Oeste",7495033,246,"Goiânia",1511709,"Anhanguera",906,7495033],["DF","Distrito Federal","Centro-Oeste",3009996,1,"Brasília",3009996,"Brasília",3009996,3009996]],"t":[["São Paulo","SP",11911337],["Rio de Janeiro","RJ",6731133],["Brasília","DF",3009996],["Fortaleza","CE",2582360],["Salvador","BA",2559945],["Belo Horizonte","MG",2415451],["Manaus","AM",2327101],["Curitiba","PR",1832183],["Recife","PE",1588983],["Goiânia","GO",1511709],["Belém","PA",1396157],["Porto Alegre","RS",1388791],["Guarulhos","SP",1351284],["Campinas","SP",1189761],["São Luís","MA",1090229],["Maceió","AL",995134],["Campo Grande","MS",970843],["São Gonçalo","RJ",959977],["Teresina","PI",908012],["João Pessoa","PB",906093],["Duque de Caxias","RJ",866167],["Nova Iguaçu","RJ",843367],["São Bernardo do Campo","SP",842558],["Santo André","SP",784290],["Natal","RN",783196],["Uberlândia","MG",768339],["Sorocaba","SP",766390],["Osasco","SP",761441],["Ribeirão Preto","SP",734538],["São José dos Campos","SP",729153]],"b":[["Serra da Saudade","MG",857],["Anhanguera","GO",906],["Borá","SP",935],["Araguainha","MT",989],["Nova Castilho","SP",1070],["Cedro do Abaeté","MG",1078],["André da Rocha","RS",1156],["União da Serra","RS",1183],["São Sebastião do Rio Preto","MG",1211],["Oliveira de Fátima","TO",1228],["Coqueiro Baixo","RS",1308],["Engenho Velho","RS",1315],["Nova Aliança do Ivaí","PR",1316],["Jardim Olinda","PR",1345],["Miguel Leão","PI",1359],["Carlos Gomes","RS",1384],["Tupanci do Sul","RS",1396],["Cachoeira de Goiás","GO",1415],["Uru","SP",1428],["Grupiara","MG",1430],["Guabiju","RS",1441],["Lagoa Santa","GO",1444],["Flora Rica","SP",1475],["Crixás do Tocantins","TO",1491],["Paiva","MG",1491],["Doresópolis","MG",1500],["Santa Tereza","RS",1529],["Montauri","RS",1530],["Antônio Prado de Minas","MG",1545],["Consolação","MG",1561]],"tot":214211951,"nm":5571,"med":11386.0};
+const S=D.s.map(r=>({uf:r[0],n:r[1],reg:r[2],p:r[3],nm:r[4],big:r[5],bigp:r[6],sm:r[7],smp:r[8]}));
+const T=D.t.map(r=>({n:r[0],uf:r[1],p:r[2]})),B=D.b.map(r=>({n:r[0],uf:r[1],p:r[2]}));
+const f=x=>x.toLocaleString('pt-BR');const $=id=>document.getElementById(id);
+const st={v:'s',d:'top',reg:'',n:10};
+$('nm').textContent=f(D.nm);
+const big=S.reduce((a,b)=>a.p>b.p?a:b),sml=S.reduce((a,b)=>a.p<b.p?a:b);
+$('kpis').innerHTML=[[f(D.tot),'habitantes no Brasil'],[big.n,'UF mais populosa · '+f(big.p)],[sml.n,'UF menos populosa · '+f(sml.p)],[T[0].n,'maior cidade · '+f(T[0].p)],[B[0].n+'/'+B[0].uf,'menor cidade · '+f(B[0].p)],[(S.find(s=>s.uf=='SP').p/D.tot*100).toFixed(1)+'%','da população vive em SP']].map(k=>`<div class="k"><b>${k[0]}</b><span>${k[1]}</span></div>`).join('');
+[...new Set(S.map(s=>s.reg))].forEach(r=>$('reg').add(new Option(r,r)));
+function bind(id,key){$(id).onclick=e=>{const b=e.target.closest('button');if(!b)return;st[key]=b.dataset.v;[...$(id).children].forEach(c=>c.classList.toggle('on',c===b));render()}}
+bind('lvl','v');bind('dir','d');
+$('reg').onchange=e=>{st.reg=e.target.value;render()};
+$('n').oninput=e=>{st.n=+e.target.value;render()};
+function render(){
+ const m=st.v=='m';let a=m?(st.d=='top'?T:B):[...S].filter(s=>!st.reg||s.reg==st.reg).sort((x,y)=>st.d=='top'?y.p-x.p:x.p-y.p);
+ if(m&&st.reg){const u=new Set(S.filter(s=>s.reg==st.reg).map(s=>s.uf));a=a.filter(x=>u.has(x.uf))}
+ const mx=m?30:a.length;$('n').max=mx;if(st.n>mx)st.n=mx;$('n').value=st.n;$('nv').textContent=st.n;
+ a=a.slice(0,st.n);const top=Math.max(...a.map(x=>x.p),1);
+ $('ttl').textContent=(st.d=='top'?'Maiores ':'Menores ')+(m?'municípios':'estados')+(st.reg?' · '+st.reg:'');
+ $('list').innerHTML=a.length?a.map((x,i)=>`<div class="row" data-i="${i}"><span class="n">${i+1}. ${x.n} <i>${m?x.uf:''}</i></span><span class="t"><div class="f" style="width:${x.p/top*100}%;background:${st.d=='top'?'var(--a)':'var(--b)'}"></div></span><span class="v">${f(x.p)}</span></div>`).join(''):'<p>Nenhum município deste grupo entre os 30 extremos.</p>';
+ [...$('list').children].forEach((r,i)=>r.onclick=()=>show(a[i]));
+}
+function show(x){
+ let h;if(x.nm){h=`<b>${x.n} (${x.uf})</b> · ${x.reg} · ${f(x.p)} hab. (${(x.p/D.tot*100).toFixed(2)}% do Brasil)<br>${x.nm} municípios · maior: ${x.big} (${f(x.bigp)}) · menor: ${x.sm} (${f(x.smp)})`}
+ else{h=`<b>${x.n}/${x.uf}</b> · ${f(x.p)} habitantes`}
+ $('info').innerHTML=h}
+render();
+</script></body></html>
